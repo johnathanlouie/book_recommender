@@ -1,8 +1,9 @@
+import 'package:book_recommender/common.dart' as common;
+import 'package:book_recommender/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:book_recommender/screens/library.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -139,63 +140,62 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   });
                 },
                 title: const Text('I accept the Terms of Use.'),
-                subtitle: const Text(
-                    'By joining, I agree to the Application Terms.'),
+                subtitle:
+                    const Text('By joining, I agree to the Application Terms.'),
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_isToSAccepted) {
-                      if (_signUpKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Registering the user....'),
-                          ),
-                        );
-                        try {
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: _email.text,
-                            password: _password.text,
-                          );
-                          await FirebaseDatabase.instance
-                              .ref()
-                              .child(
-                                  "users/${FirebaseAuth.instance.currentUser!.uid}")
-                              .set({
-                            'firstName': _firstName.text,
-                            'lastName': _lastName.text,
-                          });
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          await prefs.setString('firstName', _firstName.text);
-                          await prefs.setString('lastName', _lastName.text);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => LibraryScreen()),
-                          );
-                        } catch (e) {
-                          // TODO: Add real error handling.
+                child: Consumer<common.User>(
+                  builder: (context, user, child) {
+                    return ElevatedButton(
+                      onPressed: () async {
+                        if (_isToSAccepted) {
+                          if (_signUpKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Registering the user....'),
+                              ),
+                            );
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                email: _email.text,
+                                password: _password.text,
+                              );
+                              await FirebaseDatabase.instance
+                                  .ref()
+                                  .child(
+                                      "users/${FirebaseAuth.instance.currentUser!.uid}")
+                                  .set({
+                                'firstName': _firstName.text,
+                                'lastName': _lastName.text,
+                              });
+                              user.logIn();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LibraryScreen()),
+                              );
+                            } catch (e) {
+                              // TODO: Add real error handling.
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Error registering new user.'),
+                                ),
+                              );
+                              print(e);
+                            }
+                          }
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content:
-                                  Text('Error registering new user.'),
-                            ),
+                                content: Text('Accept the Terms of Use.')),
                           );
-                          print(e);
                         }
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Accept the Terms of Use.'),
-                        ),
-                      );
-                    }
+                      },
+                      child: const Text('Join Now'),
+                    );
                   },
-                  child: const Text('Join Now'),
                 ),
               ),
             ],
