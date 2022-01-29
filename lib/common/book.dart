@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Book {
   String googleId;
   String title;
@@ -8,7 +6,7 @@ class Book {
   DateTime publishedDate;
   String genre;
   double rating;
-  NetworkImage thumbnail;
+  String thumbnail;
 
   Book(this.googleId, this.title, this.author, this.description,
       this.publishedDate, this.genre, this.rating, this.thumbnail);
@@ -26,7 +24,7 @@ class Book {
       DateTime(google['publishedDate']),
       google['volumeInfo']['mainCategory'],
       google['volumeInfo']['averageRating'],
-      NetworkImage(google['volumeInfo']['imageLinks']['thumbnail']),
+      google['volumeInfo']['imageLinks']['thumbnail'],
     );
   }
 }
