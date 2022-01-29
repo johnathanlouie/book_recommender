@@ -3,7 +3,7 @@ class Book {
   String title;
   List<String> author;
   String description;
-  DateTime publishedDate;
+  String publishedDate;
   String genre;
   double rating;
   String thumbnail;
@@ -15,15 +15,19 @@ class Book {
     return (other.googleId == googleId);
   }
 
-  static Book fromGoogle(Map google) {
+  static Book fromGoogle(Map<String, dynamic> google) {
+    double rating = 0.0;
+    if (google['volumeInfo']['averageRating'] != null) {
+      rating = google['volumeInfo']['averageRating'].toDouble();
+    }
     return Book(
       google['id'],
       google['volumeInfo']['title'],
-      google['volumeInfo']['authors'],
-      google['volumeInfo']['description'],
-      DateTime(google['publishedDate']),
-      google['volumeInfo']['mainCategory'],
-      google['volumeInfo']['averageRating'],
+      List<String>.from(google['volumeInfo']['authors'] ?? []),
+      google['volumeInfo']['description'] ?? '',
+      google['volumeInfo']['publishedDate'],
+      google['volumeInfo']['mainCategory'] ?? '',
+      rating,
       google['volumeInfo']['imageLinks']['thumbnail'],
     );
   }
