@@ -21,7 +21,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
             itemCount: results.length,
             itemBuilder: (context, index) {
               Book book = results.get(index);
-              return ExpandedListTile(book);
+              return BookListTile(book);
             },
           );
         },

@@ -2,16 +2,16 @@ import 'package:book_recommender/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ExpandedListTile extends StatefulWidget {
+class BookListTile extends StatefulWidget {
   final Book _book;
 
-  const ExpandedListTile(this._book, {Key? key}) : super(key: key);
+  const BookListTile(this._book, {Key? key}) : super(key: key);
 
   @override
-  _ExpandedListTileState createState() => _ExpandedListTileState();
+  _BookListTileState createState() => _BookListTileState();
 }
 
-class _ExpandedListTileState extends State<ExpandedListTile> {
+class _BookListTileState extends State<BookListTile> {
   bool expanded = false;
 
   @override

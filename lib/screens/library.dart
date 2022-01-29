@@ -21,7 +21,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             itemCount: collection.length,
             itemBuilder: (context, index) {
               Book book = collection.get(index);
-              return ExpandedListTile(book);
+              return BookListTile(book);
             },
           );
         },
