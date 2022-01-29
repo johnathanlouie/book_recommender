@@ -37,9 +37,9 @@ class _ExpandedListTileState extends State<ExpandedListTile> {
                 : const Icon(Icons.star_border_outlined),
             onPressed: () {
               if (books.contains(widget._book)) {
-                books.removeBook(widget._book.googleId);
+                books.remove(widget._book.googleId);
               } else {
-                books.addBook(widget._book);
+                books.add(widget._book);
               }
             },
           );

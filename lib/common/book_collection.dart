@@ -21,14 +21,14 @@ class BookCollection extends ChangeNotifier {
     return false;
   }
 
-  void addBook(Book book) {
+  void add(Book book) {
     if (!contains(book)) {
       _books.add(book);
       notifyListeners();
     }
   }
 
-  void removeBook(String googleId) {
+  void remove(String googleId) {
     for (Book b in _books) {
       if (b.googleId == googleId) {
         _books.remove(b);
