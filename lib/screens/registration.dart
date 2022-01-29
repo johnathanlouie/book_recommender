@@ -106,7 +106,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: TextFormField(
                   controller: _password,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.length < 6) {
                       return 'Enter your password.';
                     }
                     return null;
@@ -177,7 +177,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 builder: (context) => LibraryScreen()),
                           );
                         } catch (e) {
-                          // TODO add real error handling
+                          // TODO: Add real error handling.
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content:
