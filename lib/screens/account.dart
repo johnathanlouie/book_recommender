@@ -18,20 +18,28 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Account')),
       body: Consumer<common.User>(builder: (context, user, child) {
-        return ElevatedButton(
-          onPressed: () async {
-            try {
-              FirebaseAuth.instance.signOut();
-              user.logOut();
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            } catch (e) {
-              // TODO: Add real error handling.
-              print(e);
-            }
-          },
-          child: const Text('Sign Out'),
+        return Column(
+          children: [
+            Text(
+              "Hello ${user.firstName} ${user.lastName}!",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  FirebaseAuth.instance.signOut();
+                  user.logOut();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                } catch (e) {
+                  // TODO: Add real error handling.
+                  print(e);
+                }
+              },
+              child: const Text('Sign Out'),
+            ),
+          ],
         );
       }),
       bottomNavigationBar: const MyBottomBar(MyBottomBar.account),
