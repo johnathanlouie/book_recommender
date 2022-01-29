@@ -1,5 +1,7 @@
+import 'package:book_recommender/common.dart';
 import 'package:book_recommender/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);
@@ -13,6 +15,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Library')),
+      body: Consumer<BookCollection>(
+        builder: (context, books, child) {
+          return ListView.builder(
+            itemCount: books.books.length,
+            itemBuilder: (context, index) {
+              Book book = books.books[index];
+              return ListTile(
+                leading: Image.network(book.thumbnail),
+                title: Text(book.title),
+                subtitle: Text(book.description),
+              );
+            },
+          );
+        },
+      ),
       bottomNavigationBar: const MyBottomBar(MyBottomBar.library),
     );
   }
