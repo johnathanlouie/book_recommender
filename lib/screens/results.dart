@@ -21,27 +21,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
             itemCount: results.length,
             itemBuilder: (context, index) {
               Book book = results.books[index];
-              return ListTile(
-                leading: Image.network(book.thumbnail),
-                title: Text(book.title),
-                subtitle: Text(book.description),
-                trailing: Consumer<BookCollection>(
-                  builder: (context, books, child2) {
-                    return IconButton(
-                      icon: books.contains(book)
-                          ? const Icon(Icons.star)
-                          : const Icon(Icons.star_border_outlined),
-                      onPressed: () {
-                        if (books.contains(book)) {
-                          books.removeBook(book.googleId);
-                        } else {
-                          books.addBook(book);
-                        }
-                      },
-                    );
-                  },
-                ),
-              );
+              return ExpandedListTile(book);
             },
           );
         },
