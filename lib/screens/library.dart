@@ -16,11 +16,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('My Library')),
       body: Consumer<BookCollection>(
-        builder: (context, books, child) {
+        builder: (context, collection, child) {
           return ListView.builder(
-            itemCount: books.books.length,
+            itemCount: collection.length,
             itemBuilder: (context, index) {
-              Book book = books.books[index];
+              Book book = collection.get(index);
               return ExpandedListTile(book);
             },
           );

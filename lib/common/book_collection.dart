@@ -6,6 +6,10 @@ class BookCollection extends ChangeNotifier {
 
   List<Book> get books => _books;
 
+  Book get(int index) {
+    return _books[index];
+  }
+
   int get length => _books.length;
 
   bool contains(Book book) {
