@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            Consumer<BookCollection>(
+            Consumer<SearchResults>(
               builder: (context, books, child) {
                 return ElevatedButton(
                   onPressed: () async {

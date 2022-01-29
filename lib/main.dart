@@ -11,6 +11,7 @@ void main() {
     providers: [
       ChangeNotifierProvider(create: (context) => common.User()),
       ChangeNotifierProvider(create: (context) => common.BookCollection()),
+      ChangeNotifierProvider(create: (context) => common.SearchResults()),
     ],
     child: MyApp(),
   ));
