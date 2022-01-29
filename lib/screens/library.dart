@@ -21,11 +21,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             itemCount: books.books.length,
             itemBuilder: (context, index) {
               Book book = books.books[index];
-              return ListTile(
-                leading: Image.network(book.thumbnail),
-                title: Text(book.title),
-                subtitle: Text(book.description),
-              );
+              return ExpandedListTile(book);
             },
           );
         },
