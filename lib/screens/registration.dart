@@ -140,7 +140,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
                 title: const Text('I accept the Terms of Use.'),
                 subtitle: const Text(
-                    'By joining, I agree to Restaurant Rewards Terms, Restaurant Card Terms, and the Application Terms.'),
+                    'By joining, I agree to the Application Terms.'),
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               Padding(
