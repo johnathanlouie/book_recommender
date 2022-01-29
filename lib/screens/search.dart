@@ -44,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             Consumer<SearchResults>(
-              builder: (context, books, child) {
+              builder: (context, results, child) {
                 return ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -53,15 +53,15 @@ class _SearchScreenState extends State<SearchScreen> {
                             'https://api.smmry.com?SM_API_KEY=9DAE6B59C3&SM_KEYWORD_COUNT=5'),
                         body: {'sm_api_input': _textBlock.text},
                       );
-                      var results = jsonDecode(response.body);
-                      var keywords =
-                          List<String>.from(results['sm_api_keyword_array']);
+                      var responseBody = jsonDecode(response.body);
+                      var keywords = List<String>.from(
+                          responseBody['sm_api_keyword_array']);
                       response = await http.get(Uri.parse(
                           'https://www.googleapis.com/books/v1/volumes?q=${keywords.join('+')}'));
-                      results = jsonDecode(response.body);
+                      responseBody = jsonDecode(response.body);
                       // TODO: What if there are no books?
-                      for (var item in results['items']) {
-                        books.addBook(Book.fromGoogle(item));
+                      for (var item in responseBody['items']) {
+                        results.add(Book.fromGoogle(item));
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => ResultsScreen(),

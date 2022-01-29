@@ -20,7 +20,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           return ListView.builder(
             itemCount: results.length,
             itemBuilder: (context, index) {
-              Book book = results.books[index];
+              Book book = results.get(index);
               return ExpandedListTile(book);
             },
           );
