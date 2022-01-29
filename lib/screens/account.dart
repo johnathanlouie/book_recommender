@@ -1,6 +1,6 @@
 import 'package:book_recommender/common.dart' as common;
 import 'package:book_recommender/screens.dart';
-import 'package:book_recommender/widgets/bottom_bar.dart';
+import 'package:book_recommender/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

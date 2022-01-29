@@ -1,4 +1,4 @@
-import 'package:book_recommender/widgets/bottom_bar.dart';
+import 'package:book_recommender/widgets.dart';
 import 'package:flutter/material.dart';
 
 class LibraryScreen extends StatefulWidget {
