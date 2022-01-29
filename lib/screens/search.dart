@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_recommender/common.dart';
+import 'package:book_recommender/screens.dart';
 import 'package:book_recommender/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -62,6 +63,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       for (var item in results['items']) {
                         books.addBook(Book.fromGoogle(item));
                       }
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ResultsScreen(),
+                      ));
                     }
                   },
                   child: const Text('Find'),
