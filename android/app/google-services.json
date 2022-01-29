@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "633383134555",
+    "project_id": "book-recommender-f801d",
+    "storage_bucket": "book-recommender-f801d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633383134555:android:cab27f3ea2495cfa48267e",
+        "android_client_info": {
+          "package_name": "com.jingfei.book_recommender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633383134555-943m8ns64nvs7arusrcggbqk08u8ogn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfn_g-KnH6LD_yENOEC6_zhDDBNaylEqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633383134555-943m8ns64nvs7arusrcggbqk08u8ogn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
