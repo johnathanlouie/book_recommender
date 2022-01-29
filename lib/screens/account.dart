@@ -1,4 +1,5 @@
 import 'package:book_recommender/common.dart' as common;
+import 'package:book_recommender/screens.dart';
 import 'package:book_recommender/widgets/bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,9 @@ class _AccountScreenState extends State<AccountScreen> {
             try {
               FirebaseAuth.instance.signOut();
               user.logOut();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
             } catch (e) {
               // TODO: Add real error handling.
               print(e);
