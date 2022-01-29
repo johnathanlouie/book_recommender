@@ -6,6 +6,8 @@ class BookCollection extends ChangeNotifier {
 
   List<Book> get books => _books;
 
+  int get length => _books.length;
+
   bool contains(Book book) {
     for (Book b in _books) {
       if (book.equals(b)) {
