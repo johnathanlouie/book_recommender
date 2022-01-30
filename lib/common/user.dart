@@ -19,15 +19,19 @@ class User extends ChangeNotifier {
       return false;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? id = prefs.getString('userID');
-    if (id == null) {
+    if (FirebaseAuth.instance.currentUser!.uid != prefs.getString('userID')) {
       return false;
     }
-    if (FirebaseAuth.instance.currentUser!.uid != id) {
+    String? firstName = prefs.getString('firstName');
+    if (firstName == null) {
       return false;
     }
-    _firstName = prefs.getString('firstName') ?? '';
-    _lastName = prefs.getString('lastName') ?? '';
+    _firstName = firstName;
+    String? lastName = prefs.getString('lastName');
+    if (lastName == null) {
+      return false;
+    }
+    _lastName = lastName;
     return true;
   }
 
