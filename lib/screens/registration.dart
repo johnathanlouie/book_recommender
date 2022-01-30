@@ -162,9 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 email: _email.text,
                                 password: _password.text,
                               );
-                              common.UserDao.set(
-                                  _firstName.text, _lastName.text);
-                              user.logIn();
+                              user.register(_firstName.text, _lastName.text);
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => LibraryScreen()),

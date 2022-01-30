@@ -13,10 +13,7 @@ class User extends ChangeNotifier {
 
   static bool get isLoggedIn => FirebaseAuth.instance.currentUser != null;
 
-  Future<bool> readLocal() async {
-    if (!isLoggedIn) {
-      return false;
-    }
+  Future<bool> _readLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (FirebaseAuth.instance.currentUser!.uid != prefs.getString('userID')) {
       return false;
@@ -34,21 +31,14 @@ class User extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> writeLocal() async {
-    if (!isLoggedIn || _firstName == '' || _lastName == '') {
-      return false;
-    }
+  Future<void> _writeLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('firstName', _firstName);
     await prefs.setString('lastName', _lastName);
     await prefs.setString('userID', FirebaseAuth.instance.currentUser!.uid);
-    return true;
   }
 
-  Future<bool> readDatabase() async {
-    if (!isLoggedIn) {
-      return false;
-    }
+  Future<bool> _readDatabase() async {
     DataSnapshot userInfo = await FirebaseDatabase.instance
         .ref("users/${FirebaseAuth.instance.currentUser!.uid}")
         .get();
@@ -65,25 +55,45 @@ class User extends ChangeNotifier {
     return true;
   }
 
-  void logIn() async {
+  Future<void> _writeDatabase() async {
+    await FirebaseDatabase.instance
+        .ref()
+        .child("users/${FirebaseAuth.instance.currentUser!.uid}")
+        .set({
+      'firstName': _firstName,
+      'lastName': _lastName,
+    });
+  }
+
+  Future<bool> register(String firstName, String lastName) async {
+    if (!isLoggedIn || firstName == '' || lastName == '') {
+      return false;
+    }
+    _firstName = firstName;
+    _lastName = lastName;
+    await _writeLocal();
+    await _writeDatabase();
+    return true;
+  }
+
+  Future<void> logIn() async {
     if (!isLoggedIn) {
       return;
     }
-    if (await readLocal()) {
-      return;
+    if (!await _readLocal()) {
+      if (!await _readDatabase()) {
+        return;
+      }
+      await _writeLocal();
     }
-    await readDatabase();
-    await writeLocal();
     notifyListeners();
   }
 
-  void logOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userID');
-    await prefs.remove('firstName');
-    await prefs.remove('lastName');
-    _firstName = '';
-    _lastName = '';
-    notifyListeners();
+  Future<void> logOut() async {
+    if (await (await SharedPreferences.getInstance()).clear()) {
+      _firstName = '';
+      _lastName = '';
+      notifyListeners();
+    }
   }
 }

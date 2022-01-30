@@ -39,7 +39,12 @@ class _MyAppState extends State<MyApp> {
           if (FirebaseAuth.instance.currentUser == null) {
             w = LoginScreen();
           } else {
-            w = LibraryScreen();
+            w = Consumer<common.User>(
+              builder: (context, user, child) {
+                user.logIn();
+                return LibraryScreen();
+              },
+            );
           }
         } else {
           w = const LoadingScreen(title: 'Loading....');
