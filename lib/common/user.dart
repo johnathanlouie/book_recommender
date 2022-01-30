@@ -1,8 +1,7 @@
-import 'package:book_recommender/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tuple/tuple.dart';
 
 class User extends ChangeNotifier {
   String _firstName = '';
@@ -46,17 +45,34 @@ class User extends ChangeNotifier {
     return true;
   }
 
+  Future<bool> readDatabase() async {
+    if (!isLoggedIn) {
+      return false;
+    }
+    DataSnapshot userInfo = await FirebaseDatabase.instance
+        .ref("users/${FirebaseAuth.instance.currentUser!.uid}")
+        .get();
+    Object? firstName = userInfo.child('firstName').value;
+    if (firstName == null) {
+      return false;
+    }
+    Object? lastName = userInfo.child('lastName').value;
+    if (lastName == null) {
+      return false;
+    }
+    _firstName = firstName as String;
+    _lastName = lastName as String;
+    return true;
+  }
+
   void logIn() async {
     if (!isLoggedIn) {
       return;
     }
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (await readLocal()) {
       return;
     }
-    Tuple2<String, String> name = await UserDao.get();
-    _firstName = name.item1;
-    _lastName = name.item2;
+    await readDatabase();
     await writeLocal();
     notifyListeners();
   }
