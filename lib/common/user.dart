@@ -31,6 +31,17 @@ class User extends ChangeNotifier {
     return true;
   }
 
+  Future<bool> writeLocal() async {
+    if (!isLoggedIn || _firstName == '' || _lastName == '') {
+      return false;
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('firstName', _firstName);
+    await prefs.setString('lastName', _lastName);
+    await prefs.setString('userID', FirebaseAuth.instance.currentUser!.uid);
+    return true;
+  }
+
   void logIn() async {
     if (!isLoggedIn) {
       return;
@@ -42,9 +53,7 @@ class User extends ChangeNotifier {
     Tuple2<String, String> name = await UserDao.get();
     _firstName = name.item1;
     _lastName = name.item2;
-    await prefs.setString('firstName', _firstName);
-    await prefs.setString('lastName', _lastName);
-    await prefs.setString('userID', FirebaseAuth.instance.currentUser!.uid);
+    await writeLocal();
     notifyListeners();
   }
 
