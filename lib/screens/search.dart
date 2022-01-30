@@ -48,24 +48,43 @@ class _SearchScreenState extends State<SearchScreen> {
                 return ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      http.Response response = await http.post(
-                        Uri.parse(
-                            'https://api.smmry.com?SM_API_KEY=9DAE6B59C3&SM_KEYWORD_COUNT=5'),
-                        body: {'sm_api_input': _textBlock.text},
-                      );
-                      var responseBody = jsonDecode(response.body);
-                      var keywords = List<String>.from(
-                          responseBody['sm_api_keyword_array']);
-                      response = await http.get(Uri.parse(
-                          'https://www.googleapis.com/books/v1/volumes?q=${keywords.join('+')}'));
-                      responseBody = jsonDecode(response.body);
-                      // TODO: What if there are no books?
-                      for (var item in responseBody['items']) {
-                        results.add(Book.fromGoogle(item));
+                      try {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Understanding your request....'),
+                          ),
+                        );
+                        http.Response response = await http.post(
+                          Uri.parse(
+                              'https://api.smmry.com?SM_API_KEY=9DAE6B59C3&SM_KEYWORD_COUNT=5'),
+                          body: {'sm_api_input': _textBlock.text},
+                        );
+                        var responseBody = jsonDecode(response.body);
+                        var keywords = List<String>.from(
+                            responseBody['sm_api_keyword_array']);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Finding books....'),
+                          ),
+                        );
+                        response = await http.get(Uri.parse(
+                            'https://www.googleapis.com/books/v1/volumes?q=${keywords.join('+')}'));
+                        responseBody = jsonDecode(response.body);
+                        // TODO: What if there are no books?
+                        for (var item in responseBody['items']) {
+                          results.add(Book.fromGoogle(item));
+                        }
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => ResultsScreen(),
+                        ));
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Error: Try again later.'),
+                          ),
+                        );
+                        print(e);
                       }
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => ResultsScreen(),
-                      ));
                     }
                   },
                   child: const Text('Find'),
