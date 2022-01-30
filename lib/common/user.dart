@@ -1,7 +1,8 @@
+import 'package:book_recommender/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 class User extends ChangeNotifier {
   String _firstName = '';
@@ -22,11 +23,9 @@ class User extends ChangeNotifier {
       _firstName = prefs.getString('firstName') ?? 'nullFN';
       _lastName = prefs.getString('lastName') ?? 'nullLN';
     } else {
-      DataSnapshot userInfo = await FirebaseDatabase.instance
-          .ref("users/${FirebaseAuth.instance.currentUser!.uid}")
-          .get();
-      _firstName = userInfo.child('firstName').value as String? ?? 'null';
-      _lastName = userInfo.child('lastName').value as String? ?? 'null';
+      Tuple2<String, String> name = await UserDao.get();
+      _firstName = name.item1;
+      _lastName = name.item2;
       await prefs.setString('firstName', _firstName);
       await prefs.setString('lastName', _lastName);
       await prefs.setString('userID', FirebaseAuth.instance.currentUser!.uid);

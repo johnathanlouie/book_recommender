@@ -1,7 +1,6 @@
 import 'package:book_recommender/common.dart' as common;
 import 'package:book_recommender/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -163,14 +162,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 email: _email.text,
                                 password: _password.text,
                               );
-                              await FirebaseDatabase.instance
-                                  .ref()
-                                  .child(
-                                      "users/${FirebaseAuth.instance.currentUser!.uid}")
-                                  .set({
-                                'firstName': _firstName.text,
-                                'lastName': _lastName.text,
-                              });
+                              common.UserDao.set(
+                                  _firstName.text, _lastName.text);
                               user.logIn();
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
