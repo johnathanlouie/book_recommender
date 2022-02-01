@@ -21,14 +21,14 @@ class Book {
       rating = google['volumeInfo']['averageRating'].toDouble();
     }
     return Book(
-      google['id'],
-      google['volumeInfo']['title'],
+      google['id'] ?? '',
+      google['volumeInfo']['title'] ?? '',
       List<String>.from(google['volumeInfo']['authors'] ?? []),
       google['volumeInfo']['description'] ?? '',
-      google['volumeInfo']['publishedDate'],
+      google['volumeInfo']['publishedDate'] ?? '',
       google['volumeInfo']['mainCategory'] ?? '',
       rating,
-      google['volumeInfo']['imageLinks']['thumbnail'],
+      google['volumeInfo']['imageLinks']['thumbnail'] ?? '',
     );
   }
 }
