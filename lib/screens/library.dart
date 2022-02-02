@@ -17,10 +17,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: AppBar(title: const Text('My Library')),
       body: Consumer<BookCollection>(
         builder: (context, collection, child) {
+          var books = collection.books;
           return ListView.builder(
             itemCount: collection.length,
             itemBuilder: (context, index) {
-              Book book = collection.get(index);
+              Book book = collection.books[index];
               return BookListTile(book);
             },
           );
